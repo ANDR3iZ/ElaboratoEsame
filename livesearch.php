@@ -1,45 +1,46 @@
 <?php
 include('db_connect.php');
 
-$xmlDoc=new DOMDocument();
-$xmlDoc->load("links.xml");
+$query = "SELECT o.*, c.*, s.*
+            FROM offerte_lavoro as o, competenze as c, sedi as s
+            WHERE RUOLO = DENOMINAZIONE AND o.ID_OFFERTA = s.ID_SEDE";
 
-$x=$xmlDoc->getElementsByTagName('link');
+$connection = mysqli_query($conn, $query);
+$output = "";
 
-//get the q parameter from URL
-$q=$_GET["q"];
+$string = strtoupper(filter_var($_GET["q"], FILTER_SANITIZE_STRING));
+$response="";
 
-//lookup all links from the xml file if length of q>0
-if (strlen($q)>0) {
-  $hint="";
-  for($i=0; $i<($x->length); $i++) {
-    $y=$x->item($i)->getElementsByTagName('title');
-    $z=$x->item($i)->getElementsByTagName('url');
-    if ($y->item(0)->nodeType==1) {
-      //find a link matching the search text
-      if (stristr($y->item(0)->childNodes->item(0)->nodeValue,$q)) {
-        if ($hint=="") {
-          $hint="<a href='" .
-          $z->item(0)->childNodes->item(0)->nodeValue .
-          "' target='_blank'>" .
-          $y->item(0)->childNodes->item(0)->nodeValue . "</a>";
-        } else {
-          $hint=$hint . "<br /><a href='" .
-          $z->item(0)->childNodes->item(0)->nodeValue .
-          "' target='_blank'>" .
-          $y->item(0)->childNodes->item(0)->nodeValue . "</a>";
-        }
-      }
+while($row = mysqli_fetch_array($connection)) {
+    if(strpos(strtoupper($row['RUOLO']), $string)>-1){
+        
+        $id=$row['ID_OFFERTA'];
+        $Azienda = $row['AZIENDA'];
+        $retribuzione = $row['RETRIBUZIONE'];
+        $ore = $row['ORE_GIORNALIERE'];
+        $contratto = $row['TIPO_CONTRATTO'];
+        $ruolo = str_replace($string, "<u>".$string."</u>", strtoupper($row['RUOLO']));
+        //$ruolo = $row['DENOMINAZIONE'];
+        $descrizione = $row['DESCRIZIONE'];
+        $indirizzo = $row['VIA'] . " " . $row['N_CIVICO'] . ', ' . $row['CAP'] . ', ' . $row['CITTA'];
+
+
+        $output = "<span>$ruolo</span>";
+        
+        echo $output;
+        
     }
-  }
+    
 }
 
+
+$conn -> close();
+
+                    
 // Set output to "no suggestion" if no hint was found
 // or to the correct values
-if ($hint=="") {
-  $response="no suggestion";
-} else {
-  $response=$hint;
+if ($output=="") {
+  $response="<span>no suggestion</span>";
 }
 
 //output the response

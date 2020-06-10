@@ -56,7 +56,7 @@
                             
                     $query = "SELECT o.*, c.*, s.*
                                 FROM offerte_lavoro as o, competenze as c, sedi as s
-                                WHERE RUOLO = DENOMINAZIONE AND o.ID_OFFERTA = s.ID_SEDE";
+                                WHERE RUOLO = DENOMINAZIONE";
                     
                     $query2 = "SELECT o.*, c.*
                                 FROM OFFERTE_LAVORO AS o, COMPETENZE AS c
@@ -121,7 +121,13 @@
 
                     <h5 class="card-header">Cerca</h5>
                     <div class="card-body">
-                    <script>
+                    
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Ricerca offerte..." onkeyup="showResult(this.value)">
+                            <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Vai</button>
+                            <div id="livesearch">
+                            <script>
                         
                         function showResult(str) {
                             if (str.length==0) {
@@ -142,11 +148,7 @@
                     xmlhttp.send();
 }
                     </script>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Ricerca offerte..." onkeyup="showResult(this.value)">
-                            <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Vai</button>
-                            <div id="livesearch"></div>
+                            </div>
                         </span>
                         </div>
                     </div>
