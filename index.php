@@ -67,6 +67,7 @@
                     $output = "";
 
                     while($row = mysqli_fetch_array($connection)) {
+                        $id = $row['ID_OFFERTA'];
                         $Azienda = $row['AZIENDA'];
                         $retribuzione = $row['RETRIBUZIONE'];
                         $ore = $row['ORE_GIORNALIERE'];
@@ -88,7 +89,7 @@
                             
                                 </div>
                                 <div class='card-footer text-muted'>
-                                Caricato da <a href=''>$Azienda</a>
+                                Caricato da <a href='Profile.php?p=$id'>$Azienda</a>
                             </div>
                             </div>";
                         
@@ -151,28 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Categories Widget -->
-                <div class="card my-4">
-                    <h5 class="card-header">Categorie</h5>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li>
-                                        <a href="#">Web Design</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">HTML</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Freebies</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
 
 
             </div>
